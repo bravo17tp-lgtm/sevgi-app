@@ -4,7 +4,7 @@ from datetime import date, timedelta
 
 from telegram.ext import ContextTypes
 
-import db
+from . import db
 
 
 def today():

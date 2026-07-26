@@ -15,11 +15,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-import db
-import auth
-from content import MOOD_EMOJIS, QUESTIONS, QUOTES, LOVE_LANGUAGES, LOVE_TEST_QUESTIONS, THEMES
-from telegram_bot import build_bot_app
-from jobs import daily_reminder_job, weekly_summary_job
+from . import db
+from . import auth
+from . content import MOOD_EMOJIS, QUESTIONS, QUOTES, LOVE_LANGUAGES, LOVE_TEST_QUESTIONS, THEMES
+from . telegram_bot import build_bot_app
+from . jobs import daily_reminder_job, weekly_summary_job
 
 BASE_DIR = Path(__file__).parent
 UPLOAD_DIR = BASE_DIR / "data" / "uploads"
