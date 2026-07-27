@@ -50,7 +50,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     parse_mode=ParseMode.MARKDOWN,
                     reply_markup=InlineKeyboardMarkup([[
                         InlineKeyboardButton("✅ Tasdiqlash", callback_data=f"approve_{user_id}"),
+                        InlineKeyboardButton("🟡 Kutish", callback_data=f"hold_{user_id}"),
                         InlineKeyboardButton("❌ Rad etish", callback_data=f"deny_{user_id}"),
+                        InlineKeyboardButton("⛔ Ban", callback_data=f"ban_{user_id}"),
                     ]]),
                 )
             except Exception:
@@ -61,7 +63,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("So'rovingiz hali ko'rib chiqilmoqda. ⏳")
         return
     if user["status"] == "denied":
-        await update.message.reply_text("Kechirasiz, kirish so'rovingiz rad etilgan.")
+        kb=InlineKeyboardMarkup([[InlineKeyboardButton("🔄 Qayta yuborish", callback_data=f"resend_{user_id}")]])
+        await update.message.reply_text("Kechirasiz, kirish so'rovingiz rad etilgan.",reply_markup=kb)
         return
     if user["status"] == "banned":
         await update.message.reply_text("🚫 Siz bloklangansiz.")
@@ -88,10 +91,17 @@ async def approve_deny(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             uid, "So'rovingiz tasdiqlandi! 🎉", reply_markup=open_app_kb()
         )
+    elif action=="hold":
+        db.set_user_status(uid,"pending")
+        await query.edit_message_text(f"🟡 {target['name']} kutishga qoldirildi.")
+        await context.bot.send_message(uid,"⏳ So'rovingiz qayta ko'rib chiqiladi.")
     elif action=="deny":
         db.set_user_status(uid, "denied")
         await query.edit_message_text(f"❌ {target['name']} rad etildi.")
         await context.bot.send_message(uid, "Kechirasiz, kirish so'rovingiz rad etildi.")
+
+    elif action=="resend":
+        db.resend_request(uid)
     elif action=="ban":
         db.set_user_status(uid,"banned")
         await query.edit_message_text(f"⛔ {target['name']} ban qilindi.")
@@ -101,5 +111,5 @@ async def approve_deny(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def build_bot_app() -> Application:
     application = Application.builder().token(BOT_TOKEN).build()
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CallbackQueryHandler(approve_deny, pattern="^(approve|deny|ban)_"))
+    application.add_handler(CallbackQueryHandler(approve_deny, pattern="^(approve|deny|ban|hold|resend)_"))
     return application
