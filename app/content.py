@@ -27,6 +27,17 @@ THEMES = {
         "coral": "#e2735a", "coral-soft": "rgba(226,115,90,0.16)",
         "line": "rgba(251,238,224,0.09)", "line-strong": "rgba(251,238,224,0.18)",
     },
+<<<<<<< HEAD
+    "yorugor": {
+        "label": "Yorug'", "swatch": "#f6ede0",
+        "bg": "#faf6ef", "bg2": "#ffffff", "bg3": "#f1e8d9",
+        "cream": "#3a3226", "cream-dim": "#7a6f5c", "cream-faint": "#a89d89",
+        "gold": "#b8863f", "gold-soft": "rgba(184,134,63,0.14)", "gold-dim": "#8f6a30",
+        "coral": "#c96a5c", "coral-soft": "rgba(201,106,92,0.14)",
+        "line": "rgba(58,50,38,0.08)", "line-strong": "rgba(58,50,38,0.16)",
+    },
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 }
 
 QUESTIONS = [

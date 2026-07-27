@@ -4,15 +4,25 @@ Bitta jarayonda: REST API + statik frontend + Telegram bot (polling) birga ishla
 Bu Render'ning bepul "Web Service" tarifida bitta port bilan ishlashga imkon beradi.
 """
 
+<<<<<<< HEAD
+import logging
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 import os
 import uuid
 from datetime import date, datetime, time as dtime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+<<<<<<< HEAD
+from fastapi import FastAPI, Header, HTTPException, Request, UploadFile, Form, File
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, JSONResponse
+=======
 from fastapi import FastAPI, Header, HTTPException, UploadFile, Form, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 from fastapi.staticfiles import StaticFiles
 
 from . import db
@@ -21,6 +31,12 @@ from . content import MOOD_EMOJIS, QUESTIONS, QUOTES, LOVE_LANGUAGES, LOVE_TEST_
 from . telegram_bot import build_bot_app
 from . jobs import daily_reminder_job, weekly_summary_job
 
+<<<<<<< HEAD
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+logger = logging.getLogger("sevgi.main")
+
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 BASE_DIR = Path(__file__).parent
 UPLOAD_DIR = BASE_DIR / "data" / "uploads"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -36,6 +52,15 @@ app.add_middleware(
 bot_app = build_bot_app()
 
 
+<<<<<<< HEAD
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error("Kutilmagan xato: %s %s", request.url.path, exc, exc_info=exc)
+    return JSONResponse(status_code=500, content={"detail": "Serverda kutilmagan xatolik yuz berdi."})
+
+
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 @app.on_event("startup")
 async def startup():
     db.init_db()
@@ -108,6 +133,10 @@ async def api_auth(x_telegram_init_data: str = Header(None)):
                 pass
         return {"status": "pending", "name": name}
 
+<<<<<<< HEAD
+    db.touch_user_activity(user_id, tg_user.get("username"))
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
     return {"status": user["status"], "name": user["name"]}
 
 
@@ -319,6 +348,26 @@ async def api_love_note(text: str = Form(...), x_telegram_init_data: str = Heade
     return {"ok": True}
 
 
+<<<<<<< HEAD
+# ---------- Profil ----------
+
+@app.get("/api/profile")
+def api_profile(x_telegram_init_data: str = Header(None)):
+    user = require_approved_user(x_telegram_init_data)
+    partner = db.partner_of(user["user_id"])
+    return {
+        "user_id": user["user_id"],
+        "name": user["name"],
+        "username": user["username"],
+        "is_admin": bool(user["is_admin"]),
+        "joined_at": user["joined_at"],
+        "open_count": user["open_count"] or 0,
+        "partner_name": partner["name"] if partner else None,
+    }
+
+
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 # ---------- Statistika ----------
 
 @app.get("/api/stats")
@@ -421,8 +470,13 @@ def love_test_result(x_telegram_init_data: str = Header(None)):
 @app.get("/api/settings/theme")
 def get_theme(x_telegram_init_data: str = Header(None)):
     user = require_approved_user(x_telegram_init_data)
+<<<<<<< HEAD
+    stored = db.get_setting(f"theme_{user['user_id']}")
+    return {"theme": stored or "tungi", "is_default": stored is None, "themes": THEMES}
+=======
     key = db.get_setting(f"theme_{user['user_id']}") or "tungi"
     return {"theme": key, "themes": THEMES}
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 
 
 @app.post("/api/settings/theme")

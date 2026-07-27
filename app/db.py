@@ -32,7 +32,28 @@ def init_db():
             is_admin INTEGER DEFAULT 0,
             request_count INTEGER DEFAULT 1,
             joined_at TEXT DEFAULT (datetime('now')),
+<<<<<<< HEAD
+            updated_at TEXT DEFAULT (datetime('now')),
+            last_active TEXT,
+            open_count INTEGER DEFAULT 0
+        )""")
+        # Eski bazalarda yangi ustunlar bo'lmasligi mumkin — xavfsiz qo'shamiz
+        existing_cols = {row["name"] for row in c.execute("PRAGMA table_info(users)").fetchall()}
+        if "last_active" not in existing_cols:
+            c.execute("ALTER TABLE users ADD COLUMN last_active TEXT")
+        if "open_count" not in existing_cols:
+            c.execute("ALTER TABLE users ADD COLUMN open_count INTEGER DEFAULT 0")
+        c.execute("""CREATE TABLE IF NOT EXISTS admin_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            admin_id INTEGER,
+            admin_name TEXT,
+            action TEXT,
+            target_id INTEGER,
+            detail TEXT,
+            created_at TEXT DEFAULT (datetime('now'))
+=======
             updated_at TEXT DEFAULT (datetime('now'))
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
         )""")
         c.execute("""CREATE TABLE IF NOT EXISTS journal (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,6 +99,15 @@ def init_db():
             value TEXT
         )""")
 
+<<<<<<< HEAD
+        # Indexlar — barcha jadvallar yaratilgandan keyin (tezkor qidiruv uchun)
+        c.execute("CREATE INDEX IF NOT EXISTS idx_users_status ON users(status)")
+        c.execute("CREATE INDEX IF NOT EXISTS idx_journal_user ON journal(user_id)")
+        c.execute("CREATE INDEX IF NOT EXISTS idx_moods_user_date ON moods(user_id, mood_date)")
+        c.execute("CREATE INDEX IF NOT EXISTS idx_admin_logs_created ON admin_logs(created_at)")
+
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 
 # ---------- users ----------
 
@@ -287,3 +317,145 @@ def resend_request(user_id:int):
             updated_at=datetime('now')
         WHERE user_id=?
         """,(user_id,))
+<<<<<<< HEAD
+
+
+# ---------- admin helpers ----------
+
+def total_users():
+    with get_conn() as conn:
+        return conn.execute("SELECT COUNT(*) c FROM users").fetchone()["c"]
+
+
+def banned_users():
+    with get_conn() as conn:
+        return conn.execute("SELECT * FROM users WHERE status='banned' ORDER BY joined_at DESC").fetchall()
+
+
+def denied_users():
+    with get_conn() as conn:
+        return conn.execute("SELECT * FROM users WHERE status='denied' ORDER BY joined_at DESC").fetchall()
+
+
+def admin_users():
+    with get_conn() as conn:
+        return conn.execute("SELECT * FROM users WHERE is_admin=1").fetchall()
+
+
+def all_users():
+    with get_conn() as conn:
+        return conn.execute("SELECT * FROM users ORDER BY joined_at DESC").fetchall()
+
+
+def search_user(query: str):
+    with get_conn() as conn:
+        q = f"%{query}%"
+        return conn.execute(
+            '''
+            SELECT *
+            FROM users
+            WHERE
+                CAST(user_id AS TEXT) LIKE ?
+                OR name LIKE ?
+                OR COALESCE(username,'') LIKE ?
+            ORDER BY joined_at DESC
+            ''',
+            (q, q, q),
+        ).fetchall()
+
+
+def user_statistics():
+    with get_conn() as conn:
+        row = conn.execute(
+            '''
+            SELECT
+                COUNT(*) total,
+                SUM(CASE WHEN status='approved' THEN 1 ELSE 0 END) approved,
+                SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) pending,
+                SUM(CASE WHEN status='denied' THEN 1 ELSE 0 END) denied,
+                SUM(CASE WHEN status='banned' THEN 1 ELSE 0 END) banned,
+                SUM(CASE WHEN is_admin=1 THEN 1 ELSE 0 END) admins
+            FROM users
+            '''
+        ).fetchone()
+        return dict(row)
+
+
+def unban_user(user_id: int):
+    set_user_status(user_id, "approved")
+
+
+# ---------- faollik kuzatuvi ----------
+
+def touch_user_activity(user_id: int, username: str = None):
+    """Mini App ochilganda chaqiriladi: oxirgi faollik va ochilish sonini yangilaydi."""
+    with get_conn() as conn:
+        if username:
+            conn.execute(
+                "UPDATE users SET last_active=datetime('now'), open_count=COALESCE(open_count,0)+1, "
+                "username=?, updated_at=datetime('now') WHERE user_id=?",
+                (username, user_id),
+            )
+        else:
+            conn.execute(
+                "UPDATE users SET last_active=datetime('now'), open_count=COALESCE(open_count,0)+1, "
+                "updated_at=datetime('now') WHERE user_id=?",
+                (user_id,),
+            )
+
+
+# ---------- multi-admin ----------
+
+def set_admin(user_id: int, is_admin: bool):
+    with get_conn() as conn:
+        conn.execute("UPDATE users SET is_admin=?, updated_at=datetime('now') WHERE user_id=?", (int(is_admin), user_id))
+
+
+# ---------- admin loglar ----------
+
+def log_admin_action(admin_id: int, admin_name: str, action: str, target_id: int = None, detail: str = None):
+    with get_conn() as conn:
+        conn.execute(
+            "INSERT INTO admin_logs (admin_id, admin_name, action, target_id, detail) VALUES (?,?,?,?,?)",
+            (admin_id, admin_name, action, target_id, detail),
+        )
+
+
+def recent_admin_logs(limit: int = 30):
+    with get_conn() as conn:
+        return conn.execute(
+            "SELECT * FROM admin_logs ORDER BY created_at DESC LIMIT ?", (limit,)
+        ).fetchall()
+
+
+# ---------- analitika ----------
+
+def new_users_since(cutoff_iso: str):
+    with get_conn() as conn:
+        return conn.execute(
+            "SELECT COUNT(*) c FROM users WHERE joined_at >= ?", (cutoff_iso,)
+        ).fetchone()["c"]
+
+
+def active_users_since(cutoff_iso: str):
+    with get_conn() as conn:
+        return conn.execute(
+            "SELECT COUNT(*) c FROM users WHERE last_active >= ?", (cutoff_iso,)
+        ).fetchone()["c"]
+
+
+def inactive_users(cutoff_iso: str):
+    with get_conn() as conn:
+        return conn.execute(
+            "SELECT * FROM users WHERE status='approved' AND (last_active IS NULL OR last_active < ?) "
+            "ORDER BY last_active ASC", (cutoff_iso,)
+        ).fetchall()
+
+
+def most_active_users(limit: int = 10):
+    with get_conn() as conn:
+        return conn.execute(
+            "SELECT * FROM users WHERE status='approved' ORDER BY open_count DESC LIMIT ?", (limit,)
+        ).fetchall()
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f

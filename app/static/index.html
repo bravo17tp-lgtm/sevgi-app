@@ -29,7 +29,12 @@
   button{font-family:inherit; cursor:pointer; border:none;}
   ::selection{background:var(--gold-soft);}
 
+<<<<<<< HEAD
+  #app{ max-width:520px; margin:0 auto; min-height:100vh; padding-bottom:86px; position:relative; z-index:1; }
+  #bgFx{ position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; transition:opacity .6s ease; }
+=======
   #app{ max-width:520px; margin:0 auto; min-height:100vh; padding-bottom:86px; position:relative; }
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 
   /* Loading / gate screens */
   .gate{ min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 28px; }
@@ -175,19 +180,56 @@
   .theme-swatch.active{ border-color:var(--gold-dim); background:var(--gold-soft); }
   .theme-swatch .circle{ width:30px; height:30px; border-radius:50%; margin:0 auto 8px; border:2px solid rgba(255,255,255,0.15); }
   .theme-swatch .name{ font-size:12px; color:var(--cream-dim); }
+<<<<<<< HEAD
+
+  /* Profil avatar */
+  .avatar-btn{ font-family:'Fraunces',serif; font-weight:600; font-size:14px; color:var(--gold); background:var(--gold-soft); border-color:var(--gold-dim); }
+  .avatar-lg{ width:64px; height:64px; border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-weight:600; font-size:26px; color:var(--gold); background:var(--gold-soft); border:1.5px solid var(--gold-dim); }
+
+  /* Skeleton loading */
+  .skel{ background:linear-gradient(90deg, var(--bg2) 0%, var(--bg3) 50%, var(--bg2) 100%); background-size:200% 100%; animation:skel-shimmer 1.4s ease-in-out infinite; border-radius:14px; }
+  @keyframes skel-shimmer{ 0%{ background-position:200% 0; } 100%{ background-position:-200% 0; } }
+  .skel-hero{ height:180px; border-radius:24px; margin-bottom:16px; }
+  .skel-line{ height:14px; margin-bottom:10px; }
+  .skel-card{ height:90px; margin-bottom:16px; }
+
+  /* Xato holati — qayta urinish */
+  .retry-btn{ margin-top:18px; background:var(--gold-soft); border:1px solid var(--gold-dim); color:var(--gold); padding:10px 22px; border-radius:30px; font-size:13px; font-weight:600; transition:transform .15s ease; }
+  .retry-btn:active{ transform:scale(0.94); }
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 </style>
 </head>
 <body>
 
+<<<<<<< HEAD
+<canvas id="bgFx"></canvas>
+
+<div id="app">
+  <div id="gate" class="gate" style="justify-content:flex-start; padding-top:70px; width:100%; max-width:520px; margin:0 auto; align-items:stretch; text-align:left;">
+    <div class="skel skel-hero"></div>
+    <div class="skel skel-line" style="width:60%;"></div>
+    <div class="skel skel-line" style="width:85%;"></div>
+    <div class="skel skel-card"></div>
+    <div class="skel skel-card"></div>
+=======
 <div id="app">
   <div id="gate" class="gate">
     <div class="spinner"></div>
     <p>Yuklanmoqda…</p>
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
   </div>
   <div id="main" style="display:none;">
     <header>
       <div class="h-title">Sevgi<span>.</span></div>
+<<<<<<< HEAD
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button class="gear-btn avatar-btn" id="profileBtn"></button>
+        <button class="gear-btn" id="settingsBtn"><img class="emoji-img" src="https://cdn.jsdelivr.net/gh/iamcal/emoji-data@master/img-apple-64/2699-fe0f.png" alt="" onerror="this.outerHTML='⚙️'"></button>
+      </div>
+=======
       <button class="gear-btn" id="settingsBtn"><img class="emoji-img" src="https://cdn.jsdelivr.net/gh/iamcal/emoji-data@master/img-apple-64/2699-fe0f.png" alt="" onerror="this.outerHTML='⚙️'"></button>
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
     </header>
 
     <div id="view-home" class="view"></div>
@@ -253,6 +295,25 @@
   </div>
 </div>
 
+<<<<<<< HEAD
+<div class="modal-overlay" id="profileModal">
+  <div class="modal-sheet">
+    <div class="modal-head"><h3>👤 Profil</h3><button class="close-x" id="closeProfile">✕</button></div>
+    <div style="text-align:center; padding:6px 0 18px;">
+      <div class="avatar-lg" id="profileAvatar"></div>
+      <div style="font-family:'Fraunces',serif; font-size:19px; margin-top:12px;" id="profileName">—</div>
+      <div style="color:var(--cream-faint); font-size:12.5px; margin-top:2px;" id="profileUsername">—</div>
+    </div>
+    <div class="settings-item"><span>🆔 Telegram ID</span><span class="val" id="profileId">—</span></div>
+    <div class="settings-item"><span>📆 Qo'shilgan sana</span><span class="val" id="profileJoined">—</span></div>
+    <div class="settings-item"><span>📊 Ilova ochilgan</span><span class="val" id="profileOpens">—</span></div>
+    <div class="settings-item"><span>💞 Sherigi</span><span class="val" id="profilePartner">—</span></div>
+    <div class="settings-item" id="profileAdminRow" style="display:none;"><span>👑 Holat</span><span class="val">Admin</span></div>
+  </div>
+</div>
+
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 <div class="toast" id="toast"></div>
 
 <script>
@@ -301,6 +362,165 @@ function applyTheme(themeObj) {
   const root = document.documentElement.style;
   ["bg","bg2","bg3","cream","cream-dim","cream-faint","gold","gold-soft","gold-dim","coral","coral-soft","line","line-strong"]
     .forEach(k => { if (themeObj[k]) root.setProperty(`--${k}`, themeObj[k]); });
+<<<<<<< HEAD
+  // Telegram'ning o'z header/background rangini ham ilova temasiga moslaymiz
+  try {
+    if (tg && themeObj.bg) {
+      tg.setHeaderColor?.(themeObj.bg);
+      tg.setBackgroundColor?.(themeObj.bg);
+    }
+  } catch (err) { /* eski Telegram versiyalarida bu metodlar bo'lmasligi mumkin */ }
+  initParticles(CURRENT_THEME_KEY, themeObj);
+}
+function haptic(style) {
+  try { tg?.HapticFeedback?.impactOccurred?.(style || "light"); } catch (err) {}
+}
+
+// ---------- Fonda harakatlanuvchi zarrachalar (temaga qarab) ----------
+const PARTICLE_KIND = { tungi: "stars", bahor: "leaves", quyosh: "embers", yorugor: "hearts" };
+let fx = null;
+function initParticles(themeKey, themeObj) {
+  const canvas = document.getElementById("bgFx");
+  const kind = PARTICLE_KIND[themeKey] || "stars";
+  if (fx) { fx.stop(); fx = null; }
+  fx = createParticleField(canvas, kind, themeObj);
+  fx.start();
+}
+function createParticleField(canvas, kind, themeObj) {
+  const ctx = canvas.getContext("2d");
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let w, h, particles = [], raf = null, running = false;
+
+  const COUNTS = { stars: 70, leaves: 22, embers: 26, hearts: 18 };
+  const COLORS = {
+    stars: [themeObj?.gold || "#d4af6a", "#ffffff"],
+    leaves: [themeObj?.gold || "#9bc27c", themeObj?.coral || "#e8a3b8", "#7fae63"],
+    embers: [themeObj?.gold || "#e8a33d", themeObj?.coral || "#e2735a"],
+    hearts: [themeObj?.coral || "#e0958c", themeObj?.gold || "#d4af6a"],
+  };
+
+  function resize() {
+    w = canvas.width = Math.floor(innerWidth * dpr);
+    h = canvas.height = Math.floor(innerHeight * dpr);
+    canvas.style.width = innerWidth + "px";
+    canvas.style.height = innerHeight + "px";
+  }
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function spawn() {
+    const n = COUNTS[kind] || 30;
+    particles = Array.from({ length: n }, () => makeParticle(true));
+  }
+  function makeParticle(initial) {
+    const colors = COLORS[kind];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    if (kind === "stars") {
+      return { x: rand(0, w), y: rand(0, h), r: rand(0.6, 1.8) * dpr, tw: rand(0, Math.PI * 2), speed: rand(0.15, 0.4) * dpr, color };
+    }
+    if (kind === "leaves") {
+      return { x: rand(0, w), y: initial ? rand(-h, h) : -20 * dpr, size: rand(6, 12) * dpr, rot: rand(0, 360), rotSpeed: rand(-1.2, 1.2), vy: rand(0.35, 0.8) * dpr, sway: rand(0, Math.PI * 2), swaySpeed: rand(0.01, 0.025), color };
+    }
+    if (kind === "embers") {
+      return { x: rand(0, w), y: initial ? rand(0, h) : h + 10 * dpr, r: rand(1, 2.6) * dpr, vy: -rand(0.25, 0.7) * dpr, sway: rand(0, Math.PI * 2), swaySpeed: rand(0.015, 0.03), alpha: rand(0.35, 0.9), color };
+    }
+    // hearts
+    return { x: rand(0, w), y: initial ? rand(0, h) : h + 20 * dpr, size: rand(7, 13) * dpr, vy: -rand(0.2, 0.45) * dpr, sway: rand(0, Math.PI * 2), swaySpeed: rand(0.012, 0.02), alpha: rand(0.35, 0.8), color };
+  }
+
+  function drawHeart(x, y, size, color, alpha) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(x, y);
+    ctx.scale(size / 14, size / 14);
+    ctx.beginPath();
+    ctx.moveTo(0, 4);
+    ctx.bezierCurveTo(0, 0, -7, -3, -7, -7);
+    ctx.bezierCurveTo(-7, -11, -1, -11, 0, -5);
+    ctx.bezierCurveTo(1, -11, 7, -11, 7, -7);
+    ctx.bezierCurveTo(7, -3, 0, 0, 0, 4);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.restore();
+  }
+  function drawLeaf(x, y, size, rot, color) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate((rot * Math.PI) / 180);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, size, size * 0.55, 0, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.globalAlpha = 0.75;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function tick() {
+    if (!running) return;
+    ctx.clearRect(0, 0, w, h);
+    for (const p of particles) {
+      if (kind === "stars") {
+        p.tw += 0.02;
+        const alpha = 0.35 + Math.abs(Math.sin(p.tw)) * 0.5;
+        p.y += p.speed * 0.05;
+        if (p.y > h) p.y = 0;
+        ctx.beginPath();
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = p.color;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (kind === "leaves") {
+        p.sway += p.swaySpeed;
+        p.x += Math.sin(p.sway) * 0.6 * dpr;
+        p.y += p.vy;
+        p.rot += p.rotSpeed;
+        if (p.y > h + 20 * dpr) Object.assign(p, makeParticle(false));
+        drawLeaf(p.x, p.y, p.size, p.rot, p.color);
+      } else if (kind === "embers") {
+        p.sway += p.swaySpeed;
+        p.x += Math.sin(p.sway) * 0.4 * dpr;
+        p.y += p.vy;
+        if (p.y < -10 * dpr) Object.assign(p, makeParticle(false));
+        ctx.beginPath();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (kind === "hearts") {
+        p.sway += p.swaySpeed;
+        p.x += Math.sin(p.sway) * 0.5 * dpr;
+        p.y += p.vy;
+        if (p.y < -20 * dpr) Object.assign(p, makeParticle(false));
+        drawHeart(p.x, p.y, p.size, p.color, p.alpha);
+      }
+    }
+    ctx.globalAlpha = 1;
+    raf = requestAnimationFrame(tick);
+  }
+
+  function onVisibility() {
+    if (document.hidden) { running = false; if (raf) cancelAnimationFrame(raf); }
+    else if (!running) { running = true; raf = requestAnimationFrame(tick); }
+  }
+  function onResize() { resize(); }
+
+  return {
+    start() {
+      resize(); spawn();
+      running = true;
+      raf = requestAnimationFrame(tick);
+      window.addEventListener("resize", onResize);
+      document.addEventListener("visibilitychange", onVisibility);
+    },
+    stop() {
+      running = false;
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
+    },
+  };
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 }
 
 // ---------- Auth / boshlanish ----------
@@ -318,6 +538,14 @@ async function boot() {
     const themeRes = await api("/api/settings/theme");
     THEMES_DATA = themeRes.themes;
     CURRENT_THEME_KEY = themeRes.theme;
+<<<<<<< HEAD
+    // Birinchi marta kirgan foydalanuvchi uchun Telegram'ning o'z rang sxemasiga (dark/light) mos temani tanlaymiz
+    if (themeRes.is_default && tg?.colorScheme === "light" && THEMES_DATA["yorugor"]) {
+      CURRENT_THEME_KEY = "yorugor";
+      api("/api/settings/theme", { method: "POST", body: formBody({ value: "yorugor" }) }).catch(() => {});
+    }
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
     applyTheme(THEMES_DATA[CURRENT_THEME_KEY]);
 
     document.getElementById("gate").style.display = "none";
@@ -325,18 +553,40 @@ async function boot() {
     await loadHome();
     setupNav();
     setupSettings();
+<<<<<<< HEAD
+    setupProfile();
+    if (STATE?.name) document.getElementById("profileBtn").textContent = STATE.name.trim()[0]?.toUpperCase() || "?";
+  } catch (err) {
+    renderGate("⚠️", "Xatolik yuz berdi", "Iltimos, Telegram ichida qayta oching.", true);
+  }
+}
+function renderGate(emoji, title, text, showRetry) {
+  const gate = document.getElementById("gate");
+  gate.style.justifyContent = "center";
+  gate.style.alignItems = "center";
+  gate.style.textAlign = "center";
+  gate.style.paddingTop = "40px";
+  gate.innerHTML = `<div class="emoji">${e(emoji, 44)}</div><h2>${title}</h2><p>${text}</p>` +
+    (showRetry ? `<button class="retry-btn" id="retryBtn">🔄 Qayta urinish</button>` : ``);
+  if (showRetry) document.getElementById("retryBtn").onclick = () => { haptic(); location.reload(); };
+=======
   } catch (e) {
     renderGate("⚠️", "Xatolik yuz berdi", "Iltimos, Telegram ichida qayta oching.");
   }
 }
 function renderGate(emoji, title, text) {
   document.getElementById("gate").innerHTML = `<div class="emoji">${e(emoji, 44)}</div><h2>${title}</h2><p>${text}</p>`;
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 }
 
 // ---------- Tab navigatsiyasi ----------
 function setupNav() {
   document.querySelectorAll("nav.bottom button").forEach(btn => {
+<<<<<<< HEAD
+    btn.onclick = () => { haptic(); switchTab(btn.dataset.tab); };
+=======
     btn.onclick = () => switchTab(btn.dataset.tab);
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
   });
 }
 async function switchTab(tab) {
@@ -655,6 +905,36 @@ function setupSettings() {
     await loadHome();
   };
 }
+<<<<<<< HEAD
+// ---------- Profil ----------
+function setupProfile() {
+  const modal = document.getElementById("profileModal");
+  document.getElementById("profileBtn").onclick = async () => {
+    haptic();
+    modal.classList.add("open");
+    await loadProfile();
+  };
+  document.getElementById("closeProfile").onclick = () => modal.classList.remove("open");
+}
+async function loadProfile() {
+  try {
+    const p = await api("/api/profile");
+    const initial = (p.name || "?").trim()[0]?.toUpperCase() || "?";
+    document.getElementById("profileBtn").textContent = initial;
+    document.getElementById("profileAvatar").textContent = initial;
+    document.getElementById("profileName").textContent = p.name;
+    document.getElementById("profileUsername").textContent = p.username ? "@" + p.username : "username yo'q";
+    document.getElementById("profileId").textContent = p.user_id;
+    document.getElementById("profileJoined").textContent = fmtDate(p.joined_at);
+    document.getElementById("profileOpens").textContent = `${p.open_count}x`;
+    document.getElementById("profilePartner").textContent = p.partner_name || "hali qo'shilmagan";
+    document.getElementById("profileAdminRow").style.display = p.is_admin ? "flex" : "none";
+  } catch (err) {
+    toast("Profilni yuklab bo'lmadi");
+  }
+}
+=======
+>>>>>>> f654d855a8a0b4f4f18532a22fe3e65c8114aa0f
 function toggle(id) {
   document.querySelectorAll(".sub-panel").forEach(p => { if (p.id !== id) p.classList.remove("open"); });
   document.getElementById(id).classList.toggle("open");
