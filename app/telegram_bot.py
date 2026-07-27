@@ -94,15 +94,15 @@ async def approve_deny(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             uid, "So'rovingiz tasdiqlandi! 🎉", reply_markup=open_app_kb()
         )
-        elif action == "pending":
-    db.set_user_status(uid, "pending")
-    await query.edit_message_text(
-        f"🟡 {target['name']} kutish holatiga qaytarildi."
-    )
-    await context.bot.send_message(
-        uid,
-        "⏳ So'rovingiz qayta ko'rib chiqilmoqda."
-    )
+    elif action == "pending":
+        db.set_user_status(uid, "pending")
+        await query.edit_message_text(
+            f"🟡 {target['name']} kutish holatiga qaytarildi."
+        )
+        await context.bot.send_message(
+            uid,
+            "⏳ So'rovingiz qayta ko'rib chiqilmoqda."
+        )
     elif action=="deny":
         db.set_user_status(uid, "denied")
         await query.edit_message_text(f"❌ {target['name']} rad etildi.")
