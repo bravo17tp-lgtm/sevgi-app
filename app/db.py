@@ -25,14 +25,10 @@ def init_db():
         c = conn.cursor()
         c.execute("""CREATE TABLE IF NOT EXISTS users (
             user_id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
-            username TEXT,
-            language_code TEXT,
+            name TEXT,
             status TEXT DEFAULT 'pending',
             is_admin INTEGER DEFAULT 0,
-            request_count INTEGER DEFAULT 1,
-            joined_at TEXT DEFAULT (datetime('now')),
-            updated_at TEXT DEFAULT (datetime('now'))
+            joined_at TEXT DEFAULT (datetime('now'))
         )""")
         c.execute("""CREATE TABLE IF NOT EXISTS journal (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -86,22 +82,17 @@ def get_user(user_id: int):
         return conn.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchone()
 
 
-def create_user(
-    user_id:int,
-    name:str,
-    username:str=None,
-    language_code:str=None,
-    status:str="pending",
-    is_admin:bool=False):
+def create_user(user_id: int, name: str, status: str = "pending", is_admin: bool = False):
     with get_conn() as conn:
         conn.execute(
-            "INSERT OR IGNORE INTO users (user_id,name,username,language_code,status,is_admin) VALUES (?,?,?,?,?,?)",
-            (user_id,name,username,language_code,status,int(is_admin)),
+            "INSERT OR IGNORE INTO users (user_id, name, status, is_admin) VALUES (?,?,?,?)",
+            (user_id, name, status, int(is_admin)),
         )
+
 
 def set_user_status(user_id: int, status: str):
     with get_conn() as conn:
-        conn.execute("UPDATE users SET status=?, updated_at=datetime('now') WHERE user_id=?", (status, user_id))
+        conn.execute("UPDATE users SET status=? WHERE user_id=?", (status, user_id))
 
 
 def pending_users():
@@ -281,12 +272,3 @@ def set_json_setting(key: str, value: dict):
 def get_json_setting(key: str):
     raw = get_setting(key)
     return json.loads(raw) if raw else None
-
-
-def resend_request(user_id:int):
-    with get_conn() as conn:
-        conn.execute("""UPDATE users
-        SET status='pending',
-            request_count=request_count+1,
-            updated_at=datetime('now')
-        WHERE user_id=?""",(user_id,))
