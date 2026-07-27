@@ -42,7 +42,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             try:
                 await context.bot.send_message(
                     ADMIN_ID,
-                    f"🔔 Yangi kirish so'rovi: *{update.effective_user.first_name}* (id: {user_id})",
+                    f"""🆕 *Yangi kirish so'rovi*
+
+👤 Ism: {update.effective_user.first_name}
+📛 Username: @{update.effective_user.username or 'yo\'q'}
+🆔 ID: `{user_id}`""",
                     parse_mode=ParseMode.MARKDOWN,
                     reply_markup=InlineKeyboardMarkup([[
                         InlineKeyboardButton("✅ Tasdiqlash", callback_data=f"approve_{user_id}"),
@@ -58,6 +62,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     if user["status"] == "denied":
         await update.message.reply_text("Kechirasiz, kirish so'rovingiz rad etilgan.")
+        return
+    if user["status"] == "banned":
+        await update.message.reply_text("🚫 Siz bloklangansiz.")
         return
 
     await update.message.reply_text(
@@ -81,14 +88,18 @@ async def approve_deny(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             uid, "So'rovingiz tasdiqlandi! 🎉", reply_markup=open_app_kb()
         )
-    else:
+    elif action=="deny":
         db.set_user_status(uid, "denied")
         await query.edit_message_text(f"❌ {target['name']} rad etildi.")
         await context.bot.send_message(uid, "Kechirasiz, kirish so'rovingiz rad etildi.")
+    elif action=="ban":
+        db.set_user_status(uid,"banned")
+        await query.edit_message_text(f"⛔ {target['name']} ban qilindi.")
+        await context.bot.send_message(uid,"🚫 Siz ushbu botdan foydalanishingiz bloklandi.")
 
 
 def build_bot_app() -> Application:
     application = Application.builder().token(BOT_TOKEN).build()
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CallbackQueryHandler(approve_deny, pattern="^(approve|deny)_"))
+    application.add_handler(CallbackQueryHandler(approve_deny, pattern="^(approve|deny|ban)_"))
     return application
